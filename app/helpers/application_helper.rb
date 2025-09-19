@@ -969,7 +969,13 @@ module ApplicationHelper
       s += "#{options[:separator]}#{I18n.t( :all_rights_reserved )}"
     elsif record.creative_commons?
       s += options[:separator]
-      code = Photo.license_code_for_number( record.license )
+      code = if record.is_a?(Photo)
+        Photo.license_code_for_number( record.license )
+      elsif record.is_a?(Sound)
+        Sound.license_code_for_number( record.license )
+      else
+        nil
+      end
       url = url_for_license( code )
       s += content_tag( :span ) do
         c = if options[:skip_image]

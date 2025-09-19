@@ -3,11 +3,18 @@
 class SoundsController < ApplicationController
   before_action :doorkeeper_authorize!, only: [:create],
     if: -> { authenticate_with_oauth? }
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show],
+    unless: -> { authenticated_with_oauth? }
   before_action :load_record, only: [:show]
 
   def show
-    redirect_to @sound.observations.first
+    respond_to do | format |
+      format.html do
+        @taxa = @sound.taxa.limit( 100 )
+        @observations = @sound.observations.limit( 100 )
+        @flags = @sound.flags
+      end
+    end
   end
 
   def create

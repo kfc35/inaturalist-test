@@ -182,7 +182,7 @@ class Sound < ApplicationRecord
     other_unresolved_copyright_flags_exist = flags.detect do |f|
       f.id != flag.id && f.flag == Flag::COPYRIGHT_INFRINGEMENT && !f.resolved?
     end
-    # For copyright flags, we need to change the photo URLs when flagged, and
+    # For copyright flags, we need to change the sound URLs when flagged, and
     # reset them when there are no more copyright flags
     if flag_is_copyright && !other_unresolved_copyright_flags_exist
       # TODO this is copypasta from photo.rb, but we should do something to
